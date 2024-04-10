@@ -1,6 +1,6 @@
 const { Client, Events, GatewayIntentBits } = require("discord.js");
 const config = require("../config.json");
-const getApplicationData = require("./scripts/server2");
+const getApplicationData = require("./scripts/server");
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
