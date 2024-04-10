@@ -4,21 +4,7 @@ const getPlayersGames = require("./serverscripts/Matches.js");
 const getGamesInfo = require("./serverscripts/MatchInfo.js");
 const insertData = require("./serverscripts/Database.js");
 
-const Regions = {
-  europe: "europe",
-  asia: "asia",
-  sea: "sea",
-  americas: "americas",
-};
-const Servers = {
-  eun1: "eun1",
-  euw1: "euw1",
-  kr: "kr",
-  na1: "na1",
-  br1: "br1",
-};
-
-async function seq(riotServer, riotRegion) {
+async function getApplicationData(riotServer, riotRegion) {
   try {
     const summIDs = await getChallengerData(riotServer);
     const PUUIDs = await getChallengerPUUIDs(riotServer, summIDs);
@@ -31,4 +17,4 @@ async function seq(riotServer, riotRegion) {
   }
 }
 
-seq(Servers.eun1, Regions.europe);
+module.exports = getApplicationData;

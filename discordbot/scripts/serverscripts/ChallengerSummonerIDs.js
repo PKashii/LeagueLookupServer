@@ -1,5 +1,5 @@
 const axios = require("axios");
-const config = require("../config.json");
+const config = require("/home/kashii/Documents/VSCode/Inzynieria Oprogramowania/LeagueLookupServer/config.json");
 
 async function getChallengerData(server) {
   let summonerids = [];

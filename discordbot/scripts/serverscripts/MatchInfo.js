@@ -1,5 +1,5 @@
 const axios = require("axios");
-const config = require("../config.json");
+const config = require("/home/kashii/Documents/VSCode/Inzynieria Oprogramowania/LeagueLookupServer/config.json");
 
 async function getGamesInfo(region, matchesArray) {
   return new Promise((resolve) => {
@@ -42,8 +42,7 @@ async function getGamesInfo(region, matchesArray) {
           });
         setTimeout(getInfo, 1300, i + 1);
       } else {
-        console.log("retrieving game data done!");
-        console.log(gameinfo);
+        console.log("Retrieving game data done!");
         resolve(gameinfo);
       }
     }
