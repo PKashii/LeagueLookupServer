@@ -4,21 +4,68 @@ const config = require("/home/kashii/Documents/VSCode/Inzynieria Oprogramowania/
 const commands = [
   {
     name: "getdata",
-    description: "gathers data from challenger players' games",
+    description: "gathers Challenger players' game data from a specific server",
     options: [
-      {
-        name: "region",
-        description: "API region",
-        type: ApplicationCommandOptionType.String,
-        required: true,
-      },
       {
         name: "server",
         description: "API server",
         type: ApplicationCommandOptionType.String,
+        choices: [
+          {
+            name: "euw1",
+            value: "euw1",
+          },
+          {
+            name: "eun1",
+            value: "euw1",
+          },
+          {
+            name: "na1",
+            value: "na1",
+          },
+          {
+            name: "kr",
+            value: "kr",
+          },
+          {
+            name: "br1",
+            value: "br1",
+          },
+        ],
         required: true,
       },
     ],
+  },
+  {
+    name: "getalldata",
+    description:
+      "gathers Challenger players' game data from ALL handled servers",
+  },
+  {
+    name: "getassets",
+    description: "gathers/updates specific type of assets for the app",
+    options: [
+      {
+        name: "type",
+        description: "type of assets requested",
+        type: ApplicationCommandOptionType.String,
+        choices: [
+          {
+            name: "items",
+            value: "items",
+          },
+          {
+            name: "champions",
+            value: "champions",
+          },
+        ],
+        required: true,
+      },
+    ],
+  },
+  {
+    name: "getallassets",
+    description: "gathers/updates ALL assets for the app",
   },
 ];
 

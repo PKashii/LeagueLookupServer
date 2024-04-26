@@ -36,7 +36,7 @@ async function getPlayersGames(region, PUUIDarray) {
         const uniqueMatchesArray = matchesArray.filter(
           (value, index) => matchesArray.indexOf(value) === index
         );
-        console.log("Retrieving matches done!");
+        console.log(`Retrieving matches done!`);
         resolve(uniqueMatchesArray);
       }
     }

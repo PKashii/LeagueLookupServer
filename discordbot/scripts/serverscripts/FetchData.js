@@ -1,17 +1,16 @@
 const { MongoClient } = require("mongodb");
 const config = require("/home/kashii/Documents/VSCode/Inzynieria Oprogramowania/LeagueLookupServer/config.json");
 
-const uri = config.URI;
-const client = new MongoClient(uri);
+async function FetchData(collectionName) {
+  const uri = config.URI;
+  const client = new MongoClient(uri);
 
-let data = [];
-
-async function FetchData() {
+  let data = [];
   await client.connect();
   await client.db("admin").command({ ping: 1 });
   console.log("Connected successfuly");
   const database = client.db("league_lookup");
-  const coll = database.collection("matches");
+  const coll = database.collection(collectionName);
   try {
     let cursor = await coll.find();
     await cursor.forEach((element) => {
@@ -20,7 +19,6 @@ async function FetchData() {
   } finally {
     await client.close();
   }
-  console.log(data);
+  return data;
 }
-
-FetchData();
+module.exports = FetchData;

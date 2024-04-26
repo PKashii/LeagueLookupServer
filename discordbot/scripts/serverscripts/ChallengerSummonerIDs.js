@@ -26,7 +26,7 @@ async function getChallengerData(server) {
     summonerids[i] = API_SUMMID[i].summonerId;
   }
   if (API_SUMMID != undefined) {
-    console.log("Retrieving Challenger data done!");
+    console.log(`Retrieving Challenger data from ${server} done!`);
   }
 
   return summonerids;

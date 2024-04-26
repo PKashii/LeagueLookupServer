@@ -25,14 +25,14 @@ async function getChallengerPUUIDs(server, summonerIdArray) {
             return response.data.puuid;
           })
           .catch((error) => {
-            console.log(error);
+            console.log(error + "");
           });
         if (API_PUUID != undefined) {
           puuids[i] = { server: API_SERVER, puuid: API_PUUID };
         }
         setTimeout(getpuuID, 1300, i + 1);
       } else {
-        console.log("Retrieving PUUIDs done!");
+        console.log(`Retrieving PUUIDs from ${server} done!`);
         resolve(puuids);
       }
     }
