@@ -11,7 +11,7 @@ async function getChallengerPUUIDs(server, summonerIdArray) {
     let puuids = [];
 
     async function getpuuID(i) {
-      if (i < 1) {
+      if (i < summonerIdArray.length) {
         const API_ADDRESS = `${
           API_SERVER_ROUTE + API_CALL + summonerIdArray[i]
         }?api_key=${API_KEY}`;

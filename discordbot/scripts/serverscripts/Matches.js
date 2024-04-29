@@ -1,7 +1,7 @@
 const axios = require("axios");
 const config = require("/home/kashii/Documents/VSCode/Inzynieria Oprogramowania/LeagueLookupServer/config.json");
 
-async function getPlayersGames(region, PUUIDarray) {
+async function getGames(region, PUUIDarray) {
   return new Promise((resolve) => {
     const API_KEY = config.API_KEY;
     const API_CALL = "/lol/match/v5/matches/by-puuid/";
@@ -10,11 +10,11 @@ async function getPlayersGames(region, PUUIDarray) {
 
     let matches = [];
 
-    async function getGames(i) {
-      if (i < Object.keys(PUUIDarray).length) {
+    async function loop(i) {
+      if (i < PUUIDarray.length) {
         const API_ADDRESS = `${
           API_SERVER_ROUTE + API_CALL + PUUIDarray[i].puuid
-        }/ids?start=0&count=1&api_key=${API_KEY}`;
+        }/ids?start=0&count=20&api_key=${API_KEY}`;
 
         let API_MATCHIDs = await axios
           .get(API_ADDRESS, {
@@ -30,17 +30,24 @@ async function getPlayersGames(region, PUUIDarray) {
           });
 
         matches[i] = API_MATCHIDs;
-        setTimeout(getGames, 1300, i + 1);
+        setTimeout(loop, 1300, i + 1);
       } else {
         const matchesArray = matches.flat();
         const uniqueMatchesArray = matchesArray.filter(
           (value, index) => matchesArray.indexOf(value) === index
         );
+        const games_object = [];
+        for (let id in uniqueMatchesArray) {
+          games_object.push({
+            matchId: uniqueMatchesArray[id],
+            region: region,
+          });
+        }
         console.log(`Retrieving matches done!`);
-        resolve(uniqueMatchesArray);
+        resolve(games_object);
       }
     }
-    getGames(0);
+    loop(0);
   });
 }
-module.exports = getPlayersGames;
+module.exports = getGames;

@@ -1,33 +1,26 @@
 const axios = require("axios");
 const config = require("/home/kashii/Documents/VSCode/Inzynieria Oprogramowania/LeagueLookupServer/config.json");
-const FetchData = require("./FetchData");
+const items = require("./utils/items");
 
-async function getGamesInfo(region, matchesArray) {
+async function getGamesInfo(matchesArray) {
   return new Promise((resolve) => {
     const API_KEY = config.API_KEY;
     const API_CALL = "/lol/match/v5/matches/";
-    const API_SERVER = region;
-    const API_SERVER_ROUTE = `https://${API_SERVER}.api.riotgames.com`;
-
+    let API_SERVER_ROUTE;
     let API_MATCH_INFO;
     let gameinfo = [];
+    let itemIds = [];
 
-    async function items(arr) {
-      const data = await FetchData("itemAssets");
-      for (const item of data) {
-        arr.push(parseInt(item.id));
-      }
-    }
+    items(itemIds);
 
     async function getInfo(i) {
-      const itemIds = [];
-      await items(itemIds);
-
-      if (i < matchesArray.length) {
+      if (i < 20) {
+        let API_SERVER = matchesArray[i].region;
+        API_SERVER_ROUTE = `https://${API_SERVER}.api.riotgames.com`;
         const API_ADDRESS =
           API_SERVER_ROUTE +
           API_CALL +
-          matchesArray[i] +
+          matchesArray[i].matchId +
           "/timeline?api_key=" +
           API_KEY;
 
@@ -73,21 +66,6 @@ async function getGamesInfo(region, matchesArray) {
           });
         setTimeout(getInfo, 1300, i + 1);
       } else {
-        gameinfo.sort(function (a, b) {
-          if (a[0] !== b[0]) {
-            return a[0].localeCompare(b[0]);
-          } else {
-            return a[2] - b[2];
-          }
-        });
-        let fullGameInfo;
-        for (character in gameinfo) {
-          fullGameInfo.push([
-            {
-              championName: gameinfo[character][0],
-            },
-          ]);
-        }
         console.log(`Retrieving game data done!`);
         resolve(gameinfo);
       }

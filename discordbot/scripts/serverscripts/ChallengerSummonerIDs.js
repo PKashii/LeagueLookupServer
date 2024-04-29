@@ -1,7 +1,7 @@
 const axios = require("axios");
 const config = require("/home/kashii/Documents/VSCode/Inzynieria Oprogramowania/LeagueLookupServer/config.json");
 
-async function getChallengerData(server) {
+async function getChallengerSummonerIds(server) {
   let summonerids = [];
   const API_KEY = config.API_KEY;
   const API_CALL = "/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5";
@@ -22,7 +22,7 @@ async function getChallengerData(server) {
     .catch((error) => {
       console.log(error);
     });
-  for (let i = 0; i < Object.keys(API_SUMMID).length; i++) {
+  for (let i = 0; i < API_SUMMID.length; i++) {
     summonerids[i] = API_SUMMID[i].summonerId;
   }
   if (API_SUMMID != undefined) {
@@ -31,4 +31,4 @@ async function getChallengerData(server) {
 
   return summonerids;
 }
-module.exports = getChallengerData;
+module.exports = getChallengerSummonerIds;

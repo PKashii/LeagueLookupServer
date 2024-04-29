@@ -3,12 +3,13 @@ const config = require("/home/kashii/Documents/VSCode/Inzynieria Oprogramowania/
 
 const commands = [
   {
-    name: "getdata",
-    description: "gathers Challenger players' game data from a specific server",
+    name: "updateplayers",
+    description: "updates the database to include more best players",
     options: [
       {
         name: "server",
-        description: "API server",
+        description:
+          "specify the server you want to gether data from. If 'all', then update data from ALL servers",
         type: ApplicationCommandOptionType.String,
         choices: [
           {
@@ -17,7 +18,7 @@ const commands = [
           },
           {
             name: "eun1",
-            value: "euw1",
+            value: "eun1",
           },
           {
             name: "na1",
@@ -31,41 +32,118 @@ const commands = [
             name: "br1",
             value: "br1",
           },
+          {
+            name: "ALL",
+            value: "all",
+          },
         ],
         required: true,
       },
     ],
   },
   {
-    name: "getalldata",
-    description:
-      "gathers Challenger players' game data from ALL handled servers",
-  },
-  {
-    name: "getassets",
-    description: "gathers/updates specific type of assets for the app",
+    name: "updategames",
+    description: "updates the database to include more/more updated games",
     options: [
       {
-        name: "type",
-        description: "type of assets requested",
+        name: "region",
+        description:
+          "specify the server you want to gether data from. If 'all', then update data from ALL regions",
         type: ApplicationCommandOptionType.String,
         choices: [
           {
-            name: "items",
-            value: "items",
+            name: "Europe",
+            value: "europe",
           },
           {
-            name: "champions",
-            value: "champions",
+            name: "Asia",
+            value: "asia",
+          },
+          {
+            name: "America",
+            value: "americas",
+          },
+          {
+            name: "ALL",
+            value: "all",
           },
         ],
-        required: true,
+      },
+    ],
+    required: true,
+  },
+  {
+    name: "updatebuilds",
+    description: "updates the database to include most recent builds",
+  },
+  {
+    name: "updateallplayerdata",
+    description: "updates ALL information about players and builds",
+    options: [
+      {
+        name: "server",
+        description:
+          "specify the server you want to gether data from. If 'all', then update data from ALL servers",
+        type: ApplicationCommandOptionType.String,
+        choices: [
+          {
+            name: "euw1",
+            value: "euw1",
+          },
+          {
+            name: "eun1",
+            value: "eun1",
+          },
+          {
+            name: "na1",
+            value: "na1",
+          },
+          {
+            name: "kr",
+            value: "kr",
+          },
+          {
+            name: "br1",
+            value: "br1",
+          },
+          {
+            name: "ALL",
+            value: "all",
+          },
+        ],
       },
     ],
   },
+
   {
-    name: "getallassets",
-    description: "gathers/updates ALL assets for the app",
+    name: "updateassets",
+    description: "updates the specified assets",
+    options: [
+      {
+        name: "type",
+        description: "specify the type of data to update",
+        type: ApplicationCommandOptionType.String,
+        choices: [
+          {
+            name: "Items",
+            value: "items",
+          },
+          {
+            name: "Champions",
+            value: "champions",
+          },
+          {
+            name: "All",
+            value: "all",
+          },
+        ],
+      },
+    ],
+    required: true,
+  },
+  {
+    name: "updateall",
+    description: "updates EVERYTHING in the database",
   },
 ];
 
