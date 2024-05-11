@@ -1,10 +1,10 @@
-const { Client, Events, GatewayIntentBits } = require("discord.js");
+const { Client, GatewayIntentBits } = require("discord.js");
 const config = require("../config.json");
 const {
   updatePlayers,
   updateGames,
   updateBuilds,
-  updateAllBuilds,
+  updateDatabase,
   updateAssets,
 } = require("./scripts/server");
 
@@ -12,166 +12,84 @@ const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
 });
 
-client.once(Events.ClientReady, (readyClient) => {
-  console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+client.once("ready", () => {
+  console.log(`Logged in as ${client.user.tag}`);
 });
 
-client.on("interactionCreate", (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isCommand()) return;
+
   if (interaction.commandName === "updateplayers") {
     const server = interaction.options.get("server").value;
-    try {
-      if (server === "all") {
-        updatePlayers("euw1");
-        updatePlayers("eun1");
-        updatePlayers("na1");
-        updatePlayers("kr");
-        updatePlayers("br1");
-      } else {
-        updatePlayers(server);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      console.log("upateplayers command done!");
+
+    if (server == "all") {
+      updatePlayers("eun1");
+      updatePlayers("euw1");
+      updatePlayers("na1");
+      updatePlayers("kr");
+      updatePlayers("br1");
+    } else {
+      updatePlayers(server);
     }
     interaction.reply(
       "Command executed sucessfuly, check server console for more information."
     );
-  }
-});
-
-client.on("interactionCreate", (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-  if (interaction.commandName === "updategames") {
+  } else if (interaction.commandName === "updategames") {
     const region = interaction.options.get("region").value;
-    try {
-      if (region === "all") {
-        updateGames("asia");
-        updateGames("americas");
-        updateGames("europe");
-      } else {
-        updateGames(region);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      console.log("upategames command done!");
+    if (region == "all") {
+      updateGames("europe");
+      updateGames("americas");
+      updateGames("asia");
     }
+    updateGames(region);
     interaction.reply(
       "Command executed sucessfuly, check server console for more information."
     );
-  }
-});
-
-client.on("interactionCreate", (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-  if (interaction.commandName === "updatebuilds") {
-    try {
-      updateBuilds();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      console.log("upatebuilds command done!");
-    }
+  } else if (interaction.commandName === "updatebuilds") {
+    updateBuilds();
     interaction.reply(
       "Command executed sucessfuly, check server console for more information."
     );
-  }
-});
-
-client.on("interactionCreate", (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-  if (interaction.commandName === "updateallplayerdata") {
+  } else if (interaction.commandName === "updatedatabase") {
     const server = interaction.options.get("server").value;
-    try {
-      if (server === "all") {
-        updateAllBuilds("euw1", "europe");
-        updateAllBuilds("eun1", "europe");
-        updateAllBuilds("na1", "americas");
-        updateAllBuilds("kr", "asia");
-        updateAllBuilds("br1", "americas");
-      } else {
-        switch (server) {
-          case "euw1":
-            updateAllBuilds(server, "europe");
-            break;
-          case "eun1":
-            updateAllBuilds(server, "europe");
-            break;
-          case "na1":
-            updateAllBuilds(server, "americas");
-            break;
-          case "kr":
-            updateAllBuilds(server, "asia");
-            break;
-          case "br1":
-            updateAllBuilds("br1", "americas");
-            break;
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      console.log("upateallplayerdata command done!");
+    if (server == "all") {
+      updateDatabase("euw1", "europe");
+      updateDatabase("eun1", "europe");
+      updateDatabase("na1", "americas");
+      updateDatabase("kr", "asia");
+      updateDatabase("br1", "americas");
+    } else if (server == "euw1") {
+      updateDatabase(server, "europe");
+    } else if (server == "eun1") {
+      updateDatabase("eun1", "europe");
+    } else if (server == "na1") {
+      updateDatabase("na1", "americas");
+    } else if (server == "kr") {
+      updateDatabase("kr", "asia");
+    } else if (server == "br1") {
+      updateDatabase("br1", "americas");
     }
+    interaction.reply(
+      "Command executed sucessfuly, check server console for more information."
+    );
+  } else if (interaction.commandName === "updateassets") {
+    const type = interaction.options.get("type").value;
+    updateAssets(type);
+    interaction.reply(
+      "Command executed sucessfuly, check server console for more information."
+    );
+  } else if (interaction.commandName === "updateall") {
+    updateDatabase("euw1", "europe");
+    updateDatabase("eun1", "europe");
+    updateDatabase("na1", "americas");
+    updateDatabase("kr", "asia");
+    updateDatabase("br1", "americas");
+    updateAssets("items");
+    //updateAssets("champions");
     interaction.reply(
       "Command executed sucessfuly, check server console for more information."
     );
   }
 });
 
-client.on("interactionCreate", (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-  if (interaction.commandName === "updateassets") {
-    const server = interaction.options.get("type").value;
-    try {
-      updateAssets(type);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      console.log("upateassets command done!");
-    }
-    interaction.reply(
-      "Command executed sucessfuly, check server console for more information."
-    );
-  }
-});
-
-client.on("interactionCreate", (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-  if (interaction.commandName === "updateall") {
-    try {
-      const players = async () => {
-        updatePlayers("euw1");
-        updatePlayers("eun1");
-        updatePlayers("na1");
-        updatePlayers("kr");
-        updatePlayers("br1");
-      };
-      const games = async () => {
-        updateGames("asia");
-        updateGames("americas");
-        updateGames("europe");
-      };
-      const builds = async () => {
-        updateAllBuilds("euw1", "europe");
-        updateAllBuilds("eun1", "europe");
-        updateAllBuilds("na1", "americas");
-        updateAllBuilds("kr", "asia");
-        updateAllBuilds("br1", "americas");
-      };
-      (async () => await players())();
-      (async () => await games())();
-      (async () => await builds())();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      console.log("finally... upddating EVERYTHING done!");
-    }
-    interaction.reply(
-      "Command executed sucessfuly, check server console for more information."
-    );
-  }
-});
 client.login(config.TOKEN);

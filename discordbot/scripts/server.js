@@ -4,52 +4,77 @@ const getChallengerSummonerIds = require("./serverscripts/ChallengerSummonerIDs"
 const getGamesInfo = require("./serverscripts/MatchInfo");
 const getGames = require("./serverscripts/Matches");
 const { getItems, getChampions } = require("./serverscripts/getAssets");
-const clearData = require("./serverscripts/utils/ClearData");
 const fetchData = require("./serverscripts/utils/FetchData");
 const insertData = require("./serverscripts/utils/InsertData");
+const constructBuildArray = require("./serverscripts/constructBuildsArray");
 
 async function updatePlayers(riotServer) {
+  console.log("Updating players from:" + riotServer + "...");
   try {
     const summonerids = await getChallengerSummonerIds(riotServer);
     const puuids = await getChallengerPUUIDs(riotServer, summonerids);
     await insertData("players", puuids);
   } catch (error) {
     console.log(error);
+  } finally {
+    console.log("Updating players done!");
   }
 }
 
 async function updateGames(riotRegion) {
+  console.log("Updating games from:" + riotRegion + "...");
   try {
     const player_data = await fetchData("players");
     const games = await getGames(riotRegion, player_data);
-    insertData("matches", games);
+    const games_data = await getGamesInfo(games);
+    await insertData(
+      "test",
+      games_data.map((data) => ({
+        matchId: data.matchId,
+        participants: data.participants,
+      }))
+    );
   } catch (error) {
     console.log(error);
+  } finally {
+    console.log("Updating games from:" + riotRegion + " done!");
   }
 }
 
 async function updateBuilds() {
-  const fetchCollection = "matches";
-  const insertCollection = "builds";
-  console.log("starting to update...");
+  console.log("Updating builds...");
   try {
-    const games_data = await fetchData(fetchCollection);
+    const games_data = await fetchData("matches");
     const games_info = await getGamesInfo(games_data);
-    const builds = await analyzeData(games_info);
-    await clearData(insertCollection);
-    await insertData(insertCollection, builds);
+    const arr = await constructBuildArray(games_info);
+    const builds = await analyzeData(arr);
+    //await clearData("matches");
+    await insertData("builds", builds);
   } catch (error) {
     console.log(error);
+  } finally {
+    console.log("Updating builds done!");
   }
 }
 
-async function updateAllBuilds(riotServer, riotRegion) {
+async function updateDatabase(riotServer, riotRegion) {
+  console.log(
+    "Updating the database: Server: " + riotServer + " region: " + riotRegion
+  );
   try {
     await updatePlayers(riotServer);
     await updateGames(riotRegion);
     await updateBuilds();
   } catch (error) {
     console.log(error);
+  } finally {
+    console.log(
+      "Updating the database: Server: " +
+        riotServer +
+        " region: " +
+        riotRegion +
+        " has been completed."
+    );
   }
 }
 
@@ -62,13 +87,14 @@ async function updateAssets(type) {
     }
   } catch (error) {
     console.log(error);
+  } finally {
+    console.log("updating " + type + " done!");
   }
 }
-
 module.exports = {
   updatePlayers,
   updateGames,
   updateBuilds,
-  updateAllBuilds,
+  updateDatabase,
   updateAssets,
 };

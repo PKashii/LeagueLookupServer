@@ -77,8 +77,9 @@ const commands = [
     description: "updates the database to include most recent builds",
   },
   {
-    name: "updateallplayerdata",
-    description: "updates ALL information about players and builds",
+    name: "updatedatabase",
+    description:
+      "updates teh database to include the most recenmt information about players and builds",
     options: [
       {
         name: "server",

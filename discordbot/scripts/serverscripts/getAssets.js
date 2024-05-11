@@ -1,6 +1,9 @@
 const axios = require("axios");
+const clearData = require("./utils/ClearData");
+const insertData = require("./utils/InsertData");
 
 async function getItems() {
+  clearData("itemAssets");
   let ids = [];
   let urls = [];
   let item_icons = [];
@@ -35,7 +38,8 @@ async function getItems() {
       url: urls[i],
     });
   }
-  console.log(item_icons);
+
+  insertData("itemAssets", item_icons);
 }
 
 async function getChampions() {}

@@ -1,10 +1,9 @@
 const FetchData = require("./FetchData");
 
-async function items(arr) {
+async function items() {
   const data = await FetchData("itemAssets");
-  for (const item of data) {
-    arr.push(parseInt(item.id));
-  }
+  const itemIds = data.map((item) => parseInt(item.id));
+  return itemIds;
 }
 
 module.exports = items;
