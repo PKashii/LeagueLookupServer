@@ -7,13 +7,15 @@ const {
   updateDatabase,
   updateAssets,
 } = require("./scripts/server");
+const updateVersion = require("./scripts/serverscripts/utils/updateVersion");
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
 });
 
-client.once("ready", () => {
+client.once("ready", async () => {
   console.log(`Logged in as ${client.user.tag}`);
+  await updateVersion();
 });
 
 client.on("interactionCreate", async (interaction) => {
@@ -80,10 +82,10 @@ client.on("interactionCreate", async (interaction) => {
     );
   } else if (interaction.commandName === "updateall") {
     updateDatabase("euw1", "europe");
-    updateDatabase("eun1", "europe");
+    //updateDatabase("eun1", "europe");
     updateDatabase("na1", "americas");
     updateDatabase("kr", "asia");
-    updateDatabase("br1", "americas");
+    // updateDatabase("br1", "americas");
     updateAssets("items");
     //updateAssets("champions");
     interaction.reply(

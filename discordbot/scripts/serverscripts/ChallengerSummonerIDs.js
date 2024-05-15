@@ -28,7 +28,7 @@ async function getChallengerSummonerIds(server) {
   if (API_SUMMID != undefined) {
     console.log(`Retrieving Challenger data from ${server} done!`);
   }
-
   return summonerids;
 }
+
 module.exports = getChallengerSummonerIds;

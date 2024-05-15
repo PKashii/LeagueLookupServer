@@ -1,8 +1,6 @@
 const axios = require("axios");
 const config = require("/home/kashii/Documents/VSCode/Inzynieria Oprogramowania/LeagueLookupServer/config.json");
 
-const breakpoint = config.BREAKPOINT; /*summonerIdArray.length*/
-
 async function getChallengerPUUIDs(server, summonerIdArray) {
   const API_KEY = config.API_KEY;
   const API_CALL = "/lol/summoner/v4/summoners/";
@@ -12,7 +10,7 @@ async function getChallengerPUUIDs(server, summonerIdArray) {
   try {
     return new Promise((resolve) => {
       async function loop(i) {
-        if (i < breakpoint) {
+        if (i < summonerIdArray.length) {
           const API_ADDRESS = `${
             API_SERVER_ROUTE + API_CALL + summonerIdArray[i]
           }?api_key=${API_KEY}`;

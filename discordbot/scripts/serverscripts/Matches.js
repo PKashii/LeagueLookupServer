@@ -7,11 +7,11 @@ async function getGames(region, PUUIDarray) {
   const API_SERVER = region;
   const API_SERVER_ROUTE = `https://${API_SERVER}.api.riotgames.com`;
   let matches = [];
-  const gamecount = 1;
+  const gamecount = 20;
   try {
     return new Promise((resolve) => {
       async function loop(i) {
-        if (i < /*PUUIDarray.length*/ 1) {
+        if (i < PUUIDarray.length) {
           const API_ADDRESS = `${
             API_SERVER_ROUTE + API_CALL + PUUIDarray[i].puuid
           }/ids?start=0&count=${gamecount}&api_key=${API_KEY}`;

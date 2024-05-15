@@ -7,13 +7,15 @@ const { getItems, getChampions } = require("./serverscripts/getAssets");
 const fetchData = require("./serverscripts/utils/FetchData");
 const insertData = require("./serverscripts/utils/InsertData");
 const constructBuildArray = require("./serverscripts/constructBuildsArray");
+const clearData = require("./serverscripts/utils/ClearData");
 
 async function updatePlayers(riotServer) {
   console.log("Updating players from:" + riotServer + "...");
   try {
+    //clearData("players");
     const summonerids = await getChallengerSummonerIds(riotServer);
     const puuids = await getChallengerPUUIDs(riotServer, summonerids);
-    await insertData("players", puuids);
+    //await insertData("test", puuids);
   } catch (error) {
     console.log(error);
   } finally {
@@ -27,13 +29,11 @@ async function updateGames(riotRegion) {
     const player_data = await fetchData("players");
     const games = await getGames(riotRegion, player_data);
     const games_data = await getGamesInfo(games);
-    await insertData(
-      "test",
-      games_data.map((data) => ({
-        matchId: data.matchId,
-        participants: data.participants,
-      }))
-    );
+    const dataToInsert = games_data.map((data) => ({
+      matchId: data.matchId,
+      participants: data.participants,
+    }));
+    await insertData("test", dataToInsert);
   } catch (error) {
     console.log(error);
   } finally {
@@ -49,7 +49,7 @@ async function updateBuilds() {
     const arr = await constructBuildArray(games_info);
     const builds = await analyzeData(arr);
     //await clearData("matches");
-    await insertData("builds", builds);
+    await insertData("test", builds);
   } catch (error) {
     console.log(error);
   } finally {
