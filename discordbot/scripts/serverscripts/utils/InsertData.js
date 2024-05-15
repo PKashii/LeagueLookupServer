@@ -1,5 +1,6 @@
 const { MongoClient } = require("mongodb");
-const config = require("/home/kashii/Documents/VSCode/Inzynieria Oprogramowania/LeagueLookupServer/config.json");
+const path = require("path");
+const config = require(path.resolve(__dirname, "config.json"));
 
 const uri = config.URI;
 const client = new MongoClient(uri);

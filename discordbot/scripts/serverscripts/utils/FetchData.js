@@ -1,5 +1,6 @@
 const { MongoClient } = require("mongodb");
-const config = require("/home/kashii/Documents/VSCode/Inzynieria Oprogramowania/LeagueLookupServer/config.json");
+const path = require("path");
+const config = require(path.resolve(__dirname, "config.json"));
 
 async function fetchData(collectionName) {
   const uri = config.URI;

@@ -10,7 +10,7 @@ const constructBuildArray = require("./serverscripts/constructBuildsArray");
 const clearData = require("./serverscripts/utils/ClearData");
 
 async function updatePlayers(riotServer) {
-  console.log("Updating players from:" + riotServer + "...");
+  console.log("Updating players from:" + riotServer + " ...");
   try {
     //clearData("players");
     const summonerids = await getChallengerSummonerIds(riotServer);
@@ -24,7 +24,7 @@ async function updatePlayers(riotServer) {
 }
 
 async function updateGames(riotRegion) {
-  console.log("Updating games from:" + riotRegion + "...");
+  console.log("Updating games from: " + riotRegion + "...");
   try {
     const player_data = await fetchData("players");
     const games = await getGames(riotRegion, player_data);
@@ -37,7 +37,7 @@ async function updateGames(riotRegion) {
   } catch (error) {
     console.log(error);
   } finally {
-    console.log("Updating games from:" + riotRegion + " done!");
+    console.log("Updating games from: " + riotRegion + " done!");
   }
 }
 

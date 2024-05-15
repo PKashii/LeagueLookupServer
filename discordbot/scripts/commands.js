@@ -1,5 +1,11 @@
 const { REST, Routes, ApplicationCommandOptionType } = require("discord.js");
-const config = require("/home/kashii/Documents/VSCode/Inzynieria Oprogramowania/LeagueLookupServer/config.json");
+const path = require("path");
+const config = require(path.resolve(
+  __dirname,
+  "serverscripts",
+  "utils",
+  "config.json"
+));
 
 const commands = [
   {

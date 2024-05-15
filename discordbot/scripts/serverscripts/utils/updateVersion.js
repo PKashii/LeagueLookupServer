@@ -1,10 +1,10 @@
 const fs = require("fs").promises;
+const path = require("path");
 const getVersion = require("./getClientVersion");
 const checkforNewerVersion = require("./checkVersion");
 
 async function updateVersion() {
-  const pathToJson =
-    "/home/kashii/Documents/VSCode/Inzynieria Oprogramowania/LeagueLookupServer/currentVersion.json";
+  const pathToJson = path.resolve(__dirname, "currentVersion.json");
 
   try {
     const newVersion = await getVersion();

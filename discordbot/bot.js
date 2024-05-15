@@ -1,5 +1,12 @@
 const { Client, GatewayIntentBits } = require("discord.js");
-const config = require("../config.json");
+const path = require("path");
+const config = require(path.resolve(
+  __dirname,
+  "scripts",
+  "serverscripts",
+  "utils",
+  "config.json"
+));
 const {
   updatePlayers,
   updateGames,

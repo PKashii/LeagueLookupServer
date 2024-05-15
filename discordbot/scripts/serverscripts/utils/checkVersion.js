@@ -1,5 +1,6 @@
 const getVersion = require("./getClientVersion");
-const version = require("/home/kashii/Documents/VSCode/Inzynieria Oprogramowania/LeagueLookupServer/currentVersion.json");
+const path = require("path");
+const version = require(path.resolve(__dirname, "currentVersion.json"));
 
 async function checkforNewerVersion() {
   const currentVersion = version.VERSION.trim();

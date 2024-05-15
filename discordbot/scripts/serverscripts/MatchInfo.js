@@ -1,5 +1,6 @@
 const axios = require("axios");
-const config = require("/home/kashii/Documents/VSCode/Inzynieria Oprogramowania/LeagueLookupServer/config.json");
+const path = require("path");
+const config = require(path.resolve(__dirname, "utils", "config.json"));
 
 async function getGamesInfo(matchesArray) {
   const API_KEY = config.API_KEY;
