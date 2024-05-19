@@ -5,11 +5,11 @@ const config = require(path.resolve(__dirname, "config.json"));
 const uri = config.URI;
 const client = new MongoClient(uri);
 
-async function insertData(collectionName, Array) {
+async function insertMany(collectionName, Array) {
   try {
     await client.connect();
     const connection = client.db("league_lookup").collection(collectionName);
-    if (array != undefined) {
+    if (Array != undefined) {
       await connection.insertMany(Array, (error) => {
         if (error) {
           console.log("Error occured while inserting");
@@ -22,4 +22,21 @@ async function insertData(collectionName, Array) {
   }
 }
 
-module.exports = insertData;
+async function insertOne(collectionName, Element) {
+  try {
+    await client.connect();
+    const connection = client.db("league_lookup").collection(collectionName);
+    if (Element != undefined) {
+      await connection.insertOne(Element, (error) => {
+        if (error) {
+          console.log("Error occured while inserting");
+        }
+      });
+    }
+  } finally {
+    console.log("Inserting data done!");
+    await client.close();
+  }
+}
+
+module.exports = { insertMany, insertOne };

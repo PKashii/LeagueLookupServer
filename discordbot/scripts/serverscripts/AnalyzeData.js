@@ -1,8 +1,16 @@
-async function analyzeData(array) {
+async function analyzeData(matchData) {
   const championData = {};
   const builds = [];
+  let framesArray = [];
 
-  for (const [championName, itemId, timestamp] of array) {
+  for (const game in matchData) {
+    const gameframes = matchData[game].frames;
+    for (const frame in gameframes) {
+      framesArray.push(gameframes[frame]);
+    }
+  }
+
+  for (const [championName, itemId, timestamp] of framesArray) {
     if (!championData[championName]) {
       championData[championName] = {};
     }

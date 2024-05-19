@@ -11,7 +11,6 @@ async function fetchData(collectionName) {
   const database = client.db("league_lookup");
   const coll = database.collection(collectionName);
   try {
-    console.log("fetching data from " + collectionName);
     let cursor = await coll.find();
     await cursor.forEach((element) => {
       if (element != undefined) data.push(element);

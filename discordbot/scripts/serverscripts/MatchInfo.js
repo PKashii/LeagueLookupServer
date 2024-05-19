@@ -1,53 +1,52 @@
 const axios = require("axios");
 const path = require("path");
+const { insertOne } = require("./utils/InsertData");
+const constructFramesArray = require("./constructEventsArray");
 const config = require(path.resolve(__dirname, "utils", "config.json"));
 
 async function getGamesInfo(matchesArray) {
   const API_KEY = config.API_KEY;
-  const API_CALL = "/lol/match/v5/matches/";
-  let API_SERVER_ROUTE;
-  let API_MATCH_INFO;
   let gameinfo = [];
-  try {
-    return new Promise((resolve) => {
-      async function loop(i) {
-        if (i < matchesArray.length) {
-          let API_SERVER = matchesArray[i].region;
-          API_SERVER_ROUTE = `https://${API_SERVER}.api.riotgames.com`;
-          const API_ADDRESS =
-            API_SERVER_ROUTE +
-            API_CALL +
-            matchesArray[i].matchId +
-            "/timeline?api_key=" +
-            API_KEY;
 
-          API_MATCH_INFO = await axios
-            .get(API_ADDRESS, {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            })
-            .then((response) => {
-              return response.data;
-            })
-            .then((data) => {
-              gameinfo.push({
-                matchId: data.metadata.matchId,
-                participants: data.metadata.participants,
-                frames: data.info.frames,
-              });
-            });
+  return new Promise((resolve) => {
+    console.log("fetching information about games...");
+    async function loop(i) {
+      if (i < matchesArray.length) {
+        const API_ADDRESS = `https://${matchesArray[i].region}.api.riotgames.com/lol/match/v5/matches/${matchesArray[i].matchId}/timeline?api_key=${API_KEY}`;
+        try {
+          const response = await axios.get(API_ADDRESS, {
+            headers: { "Content-Type": "application/json" },
+          });
+
+          let frames = await constructFramesArray(response.data.info);
+
+          const matchData = {
+            matchId: response.data.metadata.matchId,
+            region: matchesArray[i].region,
+            participants: response.data.metadata.participants,
+            frames: frames,
+          };
+          if (matchData.participants.length == 10) {
+            try {
+              await insertOne("matches", matchData);
+            } catch (error) {
+              console.log(
+                `Error was thrown while inserting ${matchData.matchId}. Error code: ${error.code}`
+              );
+            }
+          }
           setTimeout(loop, 1300, i + 1);
-        } else {
-          console.log(`Retrieving game data done!`);
-          resolve(gameinfo);
+        } catch (error) {
+          console.log(error);
+          setTimeout(loop, 1300, i + 1);
         }
+      } else {
+        console.log(`Retrieving game data done!`);
+        resolve(gameinfo);
       }
-
-      loop(0);
-    });
-  } catch (error) {
-    console.log(error);
-  }
+    }
+    loop(0);
+  });
 }
+
 module.exports = getGamesInfo;
