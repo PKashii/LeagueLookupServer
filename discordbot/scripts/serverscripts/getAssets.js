@@ -3,7 +3,7 @@ const clearData = require("./utils/ClearData");
 const insertData = require("./utils/InsertData");
 
 async function getItems() {
-  clearData("itemAssets");
+  await clearData("itemAssets");
   let ids = [];
   let urls = [];
   let item_icons = [];
@@ -39,7 +39,7 @@ async function getItems() {
     });
   }
 
-  insertData("itemAssets", item_icons);
+  await insertData.insertMany("itemAssets", item_icons);
 }
 
 async function getChampions() {}

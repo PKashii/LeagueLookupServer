@@ -1,4 +1,4 @@
-async function analyzeData(matchData) {
+function analyzeData(matchData) {
   const championData = {};
   const builds = [];
   let framesArray = [];
@@ -20,14 +20,17 @@ async function analyzeData(matchData) {
     }
     championData[championName][itemId].push(timestamp);
   }
-
   for (const championName in championData) {
     const itemAverages = {};
+    console.log(championName);
     for (const itemId in championData[championName]) {
-      const timestamps = championData[championName][itemId];
-      const sum = timestamps.reduce((acc, curr) => acc + curr, 0);
-      const average = sum / timestamps.length;
-      itemAverages[itemId] = Math.round(average);
+      if (championData[championName][itemId].length >= 5) {
+        const timestamps = championData[championName][itemId];
+        const sum = timestamps.reduce((acc, curr) => acc + curr, 0);
+        const average = Math.floor(sum / timestamps.length);
+        console.log(itemId + ": " + average);
+        itemAverages[itemId] = average;
+      }
     }
     const sortedEntries = Object.entries(itemAverages).sort(
       (a, b) => a[1] - b[1]

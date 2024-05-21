@@ -16,7 +16,9 @@ async function updateVersion() {
       json.VERSION = newVersion;
       const modifiedJson = JSON.stringify(json, null, 2);
       await fs.writeFile(pathToJson, modifiedJson, "utf8");
-      console.log(`Updated the client version, current version: ${newVersion}`);
+      console.log(
+        `Updated the client version, current version: ${newVersion}. Builds may not be accurate, please wait a couple of days for players to upate the builds.`
+      );
     } else {
       let data = await fs.readFile(pathToJson, "utf8");
       const json = JSON.parse(data);

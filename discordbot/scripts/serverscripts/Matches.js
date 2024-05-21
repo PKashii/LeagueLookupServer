@@ -6,11 +6,11 @@ async function getGames(region, PUUIDarray) {
   const API_KEY = config.API_KEY;
   const API_SERVER = region;
   let matches = [];
-  const gamecount = 1;
+  const gamecount = 20;
   return new Promise((resolve) => {
     console.log("Retrieving games from " + `${region}`);
     async function loop(i) {
-      if (i < /*PUUIDarray.length*/ 5) {
+      if (i < PUUIDarray.length) {
         const API_ADDRESS = `https://${API_SERVER}.api.riotgames.com/lol/match/v5/matches/by-puuid/${PUUIDarray[i].puuid}/ids?start=0&count=${gamecount}&api_key=${API_KEY}`;
         try {
           const response = await axios.get(API_ADDRESS, {

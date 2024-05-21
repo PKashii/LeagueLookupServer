@@ -38,7 +38,6 @@ async function updateBuilds() {
   try {
     const games_data = await fetchData("matches");
     const builds = await analyzeData(games_data);
-    //await insertMany("builds", builds);
     console.log(builds);
   } catch (error) {
     console.log(error);
