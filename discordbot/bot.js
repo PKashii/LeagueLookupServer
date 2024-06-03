@@ -31,13 +31,13 @@ client.on("interactionCreate", async (interaction) => {
     const server = interaction.options.get("server").value;
 
     if (server == "all") {
-      await updatePlayers("eun1");
-      await updatePlayers("na1");
-      await updatePlayers("euw1");
-      await updatePlayers("kr");
-      await updatePlayers("br1");
+      updatePlayers("eun1");
+      updatePlayers("na1");
+      updatePlayers("euw1");
+      updatePlayers("kr");
+      updatePlayers("br1");
     } else {
-      updatePlayers(server);
+      await updatePlayers(server);
     }
     interaction.reply(
       "Command executed sucessfuly, check server console for more information."
@@ -62,6 +62,16 @@ client.on("interactionCreate", async (interaction) => {
   } else if (interaction.commandName === "updateassets") {
     const type = interaction.options.get("type").value;
     updateAssets(type);
+    interaction.reply(
+      "Command executed sucessfuly, check server console for more information."
+    );
+  } else if (interaction.commandName === "updatedatabase") {
+    await updateGames("europe");
+    await updateGames("americas");
+    await updateGames("asia");
+    await updateAssets("items");
+    await updateAssets("champions");
+    await updateBuilds();
     interaction.reply(
       "Command executed sucessfuly, check server console for more information."
     );

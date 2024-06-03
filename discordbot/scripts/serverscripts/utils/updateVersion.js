@@ -2,6 +2,7 @@ const fs = require("fs").promises;
 const path = require("path");
 const getVersion = require("./getClientVersion");
 const checkforNewerVersion = require("./checkVersion");
+const { invalidateOutdatedGames } = require("./DatabaseFunctions");
 
 async function updateVersion() {
   const pathToJson = path.resolve(__dirname, "currentVersion.json");
@@ -11,6 +12,7 @@ async function updateVersion() {
     const check = await checkforNewerVersion();
 
     if (check) {
+      await invalidateOutdatedGames();
       let data = await fs.readFile(pathToJson, "utf8");
       const json = JSON.parse(data);
       json.VERSION = newVersion;

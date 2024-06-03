@@ -18,7 +18,6 @@ async function fetchData(collectionName) {
   } catch (error) {
     console.log("Error occured while fetching");
   } finally {
-    console.log("Fetching data done!");
     await client.close();
   }
   return data;

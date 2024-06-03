@@ -39,4 +39,17 @@ async function insertOne(collectionName, Element) {
   }
 }
 
-module.exports = { insertMany, insertOne };
+async function invalidateOutdatedGames() {
+  try {
+    await client.connect;
+    const connection = client.db("league_lookup").collection("matches");
+    await connection.updateMany({ usable: true }, { $set: { usable: false } });
+  } catch (error) {
+    console.log("Error occured while updating");
+  } finally {
+    console.log("Invalidating outdated games done!");
+    await client.close();
+  }
+}
+
+module.exports = { insertMany, insertOne, invalidateOutdatedGames };
