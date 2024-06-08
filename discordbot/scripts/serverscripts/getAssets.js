@@ -18,7 +18,10 @@ async function getItems() {
     const data = response.data.data;
 
     for (const item in data) {
-      if (data[item].depth === 3) {
+      if (
+        data[item].gold.total >= 2000 &&
+        data[item].gold.purchasable == true
+      ) {
         itemInfo.push({
           id: item,
           name: data[item].name,

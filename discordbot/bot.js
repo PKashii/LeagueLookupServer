@@ -22,6 +22,21 @@ const client = new Client({
 client.once("ready", async () => {
   console.log(`Logged in as ${client.user.tag}`);
   await updateVersion();
+  const update = async () => {
+    await updatePlayers("eun1");
+    await updatePlayers("na1");
+    await updatePlayers("euw1");
+    await updatePlayers("kr");
+    await updatePlayers("br1");
+    await updateGames("europe");
+    await updateGames("americas");
+    await updateGames("asia");
+    await updateAssets("items");
+    await updateAssets("champions");
+    await updateBuilds();
+    await update();
+  };
+  // await update();
 });
 
 client.on("interactionCreate", async (interaction) => {
@@ -31,11 +46,11 @@ client.on("interactionCreate", async (interaction) => {
     const server = interaction.options.get("server").value;
 
     if (server == "all") {
-      updatePlayers("eun1");
-      updatePlayers("na1");
-      updatePlayers("euw1");
-      updatePlayers("kr");
-      updatePlayers("br1");
+      await updatePlayers("eun1");
+      await updatePlayers("na1");
+      await updatePlayers("euw1");
+      await updatePlayers("kr");
+      await updatePlayers("br1");
     } else {
       await updatePlayers(server);
     }
@@ -66,6 +81,11 @@ client.on("interactionCreate", async (interaction) => {
       "Command executed sucessfuly, check server console for more information."
     );
   } else if (interaction.commandName === "updatedatabase") {
+    await updatePlayers("eun1");
+    await updatePlayers("na1");
+    await updatePlayers("euw1");
+    await updatePlayers("kr");
+    await updatePlayers("br1");
     await updateGames("europe");
     await updateGames("americas");
     await updateGames("asia");

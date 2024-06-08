@@ -7,38 +7,34 @@ async function getChallengerPUUIDs(server, summonerIdArray) {
   const API_KEY = config.API_KEY;
   const API_SERVER = server;
 
-  async function loop(i) {
-    if (i < summonerIdArray.length) {
-      const API_ADDRESS = `https://${API_SERVER}.api.riotgames.com/lol/summoner/v4/summoners/${summonerIdArray[i]}?api_key=${API_KEY}`;
+  for (let i = 0; i < summonerIdArray.length; i++) {
+    const API_ADDRESS = `https://${API_SERVER}.api.riotgames.com/lol/summoner/v4/summoners/${summonerIdArray[i]}?api_key=${API_KEY}`;
+    try {
+      const response = await axios.get(API_ADDRESS, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const puuid = { server: API_SERVER, puuid: response.data.puuid };
       try {
-        const response = await axios.get(API_ADDRESS, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const puuid = { server: API_SERVER, puuid: response.data.puuid };
-        try {
-          await insertOne("players", puuid);
-        } catch (error) {
-          if (error.code != undefined) {
-            console.log(
-              `Error has occured while inserting ${puuid.puuid}. Error code: ${error.code}`
-            );
-          } else {
-            console.log(error);
-          }
-        }
+        await insertOne("players", puuid);
       } catch (error) {
-        console.log(`Error has occured while fetching: ${summonerIdArray[i]}`);
-        setTimeout(loop, 1300, i + 1);
+        if (error.code != undefined) {
+          console.log(
+            `Error has occured while inserting ${puuid.puuid}. Error code: ${error.code}`
+          );
+        } else {
+          console.log(error);
+        }
       }
-      setTimeout(loop, 1300, i + 1);
-    } else {
-      console.log(`Gathering PUUIDs from ${server} done!`);
+    } catch (error) {
+      console.log(`Error has occured while fetching: ${summonerIdArray[i]}`);
+      await new Promise((resolve) => setTimeout(resolve, 1300)); // <- poprawione
     }
+    await new Promise((resolve) => setTimeout(resolve, 1300)); // <- poprawione
   }
 
-  loop(0);
+  console.log(`Gathering PUUIDs from ${server} done!`);
 }
 
 module.exports = getChallengerPUUIDs;
