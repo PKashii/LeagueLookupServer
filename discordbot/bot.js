@@ -79,6 +79,7 @@ client.on("interactionCreate", async (interaction) => {
     await updateGames("asia");
     await updateAssets("items");
     await updateAssets("champions");
+    await updateAssets("icons");
     await updateBuilds();
   }
 });

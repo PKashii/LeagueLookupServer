@@ -61,4 +61,29 @@ async function getChampions() {
   }
   await insertMany("championAssets", championInfo);
 }
-module.exports = { getItems, getChampions };
+
+async function getIcons() {
+  await clearData("iconAssets");
+
+  let iconInfo = [];
+
+  const API_ADDRESS = `https://ddragon.leagueoflegends.com/cdn/${version.VERSION}/data/en_US/profileicon.json`;
+  try {
+    const response = await axios.get(API_ADDRESS, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = response.data.data;
+    for (const icon in data) {
+      iconInfo.push({
+        id: data[icon].id,
+        url: `https://ddragon.leagueoflegends.com/cdn/${version.VERSION}/img/profileicon/${data[icon].id}.png`,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  await insertMany("iconAssets", iconInfo);
+}
+module.exports = { getItems, getChampions, getIcons };

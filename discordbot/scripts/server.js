@@ -3,7 +3,11 @@ const getChallengerPUUIDs = require("./serverscripts/ChallengerPUUIDs");
 const getChallengerSummonerIds = require("./serverscripts/ChallengerSummonerIDs");
 const getGamesInfo = require("./serverscripts/MatchInfo");
 const getGames = require("./serverscripts/Matches");
-const { getItems, getChampions } = require("./serverscripts/getAssets");
+const {
+  getItems,
+  getChampions,
+  getIcons,
+} = require("./serverscripts/getAssets");
 const clearData = require("./serverscripts/utils/ClearData");
 const fetchData = require("./serverscripts/utils/FetchData");
 const { insertMany } = require("./serverscripts/utils/DatabaseFunctions");
@@ -51,6 +55,8 @@ async function updateAssets(type) {
   try {
     if (type === "items") {
       await getItems();
+    } else if (type === "icons") {
+      await getIcons();
     } else {
       await getChampions();
     }

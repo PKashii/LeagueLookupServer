@@ -100,8 +100,8 @@ const commands = [
             value: "champions",
           },
           {
-            name: "All",
-            value: "all",
+            name: "Icons",
+            value: "icons",
           },
         ],
       },
