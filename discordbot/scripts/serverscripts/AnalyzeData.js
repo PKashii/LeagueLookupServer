@@ -1,34 +1,82 @@
-async function analyzeData(array) {
+function analyzeData(matchData, threshold = 0) {
+  const itemSetCounts = {};
   const championData = {};
-  const builds = [];
 
-  for (const [championName, itemId, timestamp] of array) {
-    if (!championData[championName]) {
-      championData[championName] = {};
-    }
+  for (const game in matchData) {
+    if (matchData[game].usable === true) {
+      const gameframes = matchData[game].frames;
+      const analyzedChampions = new Set();
 
-    if (!championData[championName][itemId]) {
-      championData[championName][itemId] = [];
+      const championItems = {};
+
+      for (const frame of gameframes) {
+        if (frame !== undefined) {
+          const [championName, itemId, order] = frame;
+
+          if (!championItems[championName]) {
+            championItems[championName] = [];
+          }
+
+          championItems[championName].push({ itemId, order });
+
+          if (!analyzedChampions.has(championName)) {
+            if (!championData[championName]) {
+              championData[championName] = {
+                gamesAnalyzed: 0,
+              };
+            }
+            championData[championName].gamesAnalyzed++;
+            analyzedChampions.add(championName);
+          }
+        }
+      }
+
+      for (const championName in championItems) {
+        const items = championItems[championName];
+        items.sort((a, b) => a.order - b.order);
+        const firstThreeItems = items.slice(0, 3).map((item) => item.itemId);
+
+        if (firstThreeItems.length === 3) {
+          if (!itemSetCounts[championName]) {
+            itemSetCounts[championName] = [];
+          }
+
+          let found = false;
+          for (const set of itemSetCounts[championName]) {
+            if (JSON.stringify(set.items) === JSON.stringify(firstThreeItems)) {
+              set.count++;
+              found = true;
+              break;
+            }
+          }
+
+          if (!found) {
+            itemSetCounts[championName].push({
+              items: firstThreeItems,
+              count: 1,
+            });
+          }
+        }
+      }
     }
-    championData[championName][itemId].push(timestamp);
   }
-
-  for (const championName in championData) {
-    const itemAverages = {};
-    for (const itemId in championData[championName]) {
-      const timestamps = championData[championName][itemId];
-      const sum = timestamps.reduce((acc, curr) => acc + curr, 0);
-      const average = sum / timestamps.length;
-      itemAverages[itemId] = Math.round(average);
+  const builds = [];
+  for (const championName in itemSetCounts) {
+    let maxCount = 0;
+    let mostPopularSet = null;
+    for (const set of itemSetCounts[championName]) {
+      if (set.count > maxCount) {
+        maxCount = set.count;
+        mostPopularSet = set.items;
+      }
     }
-    const sortedEntries = Object.entries(itemAverages).sort(
-      (a, b) => a[1] - b[1]
-    );
-    const first3Items = sortedEntries
-      .slice(0, 3)
-      .map((entry) => parseInt(entry[0]));
-
-    builds.push({ name: championName, items: first3Items });
+    if (mostPopularSet && maxCount >= threshold) {
+      builds.push({
+        name: championName,
+        items: mostPopularSet,
+        gamesAnalyzed: championData[championName].gamesAnalyzed,
+      });
+    }
   }
 
   return builds;

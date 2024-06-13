@@ -5,7 +5,7 @@ const config = require(path.resolve(__dirname, "utils", "config.json"));
 async function getChallengerSummonerIds(server) {
   let summonerids = [];
   const API_KEY = config.API_KEY;
-  const API_CALL = "/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5";
+  const API_CALL = "/lol/league/v4/grandmasterleagues/by-queue/RANKED_SOLO_5x5";
   const API_SERVER = server;
   const API_SERVER_ROUTE = `https://${API_SERVER}.api.riotgames.com`;
 

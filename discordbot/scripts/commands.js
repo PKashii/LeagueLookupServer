@@ -83,46 +83,6 @@ const commands = [
     description: "updates the database to include most recent builds",
   },
   {
-    name: "updatedatabase",
-    description:
-      "updates teh database to include the most recenmt information about players and builds",
-    options: [
-      {
-        name: "server",
-        description:
-          "specify the server you want to gether data from. If 'all', then update data from ALL servers",
-        type: ApplicationCommandOptionType.String,
-        choices: [
-          {
-            name: "euw1",
-            value: "euw1",
-          },
-          {
-            name: "eun1",
-            value: "eun1",
-          },
-          {
-            name: "na1",
-            value: "na1",
-          },
-          {
-            name: "kr",
-            value: "kr",
-          },
-          {
-            name: "br1",
-            value: "br1",
-          },
-          {
-            name: "ALL",
-            value: "all",
-          },
-        ],
-      },
-    ],
-  },
-
-  {
     name: "updateassets",
     description: "updates the specified assets",
     options: [
@@ -149,8 +109,8 @@ const commands = [
     required: true,
   },
   {
-    name: "updateall",
-    description: "updates EVERYTHING in the database",
+    name: "updatedatabase",
+    description: "updates aeverything in the database",
   },
 ];
 
