@@ -1,4 +1,4 @@
-function analyzeData(matchData, threshold = 5) {
+function analyzeData(matchData, threshold = 0) {
   const itemSetCounts = {};
   const championData = {};
 

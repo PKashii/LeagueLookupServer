@@ -23,6 +23,8 @@ client.once("ready", async () => {
   console.log(`Logged in as ${client.user.tag}`);
   await updateVersion();
   const update = async () => {
+    await updateAssets("items");
+    await updateAssets("champions");
     await updatePlayers("eun1");
     await updatePlayers("na1");
     await updatePlayers("euw1");
@@ -31,12 +33,10 @@ client.once("ready", async () => {
     await updateGames("europe");
     await updateGames("americas");
     await updateGames("asia");
-    await updateAssets("items");
-    await updateAssets("champions");
     await updateBuilds();
     await update();
   };
-  // await update();
+  //await update();
 });
 
 client.on("interactionCreate", async (interaction) => {
@@ -54,9 +54,6 @@ client.on("interactionCreate", async (interaction) => {
     } else {
       await updatePlayers(server);
     }
-    interaction.reply(
-      "Command executed sucessfuly, check server console for more information."
-    );
   } else if (interaction.commandName === "updategames") {
     const region = interaction.options.get("region").value;
     if (region == "all") {
@@ -66,20 +63,11 @@ client.on("interactionCreate", async (interaction) => {
     } else {
       updateGames(region);
     }
-    interaction.reply(
-      "Command executed sucessfuly, check server console for more information."
-    );
   } else if (interaction.commandName === "updatebuilds") {
     updateBuilds();
-    interaction.reply(
-      "Command executed sucessfuly, check server console for more information."
-    );
   } else if (interaction.commandName === "updateassets") {
     const type = interaction.options.get("type").value;
     updateAssets(type);
-    interaction.reply(
-      "Command executed sucessfuly, check server console for more information."
-    );
   } else if (interaction.commandName === "updatedatabase") {
     await updatePlayers("eun1");
     await updatePlayers("na1");
@@ -92,9 +80,6 @@ client.on("interactionCreate", async (interaction) => {
     await updateAssets("items");
     await updateAssets("champions");
     await updateBuilds();
-    interaction.reply(
-      "Command executed sucessfuly, check server console for more information."
-    );
   }
 });
 
